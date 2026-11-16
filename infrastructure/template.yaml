@@ -190,6 +190,7 @@ Resources:
 
   EventBridgeToQueuePolicy:
     Type: AWS::SQS::QueuePolicy
+    DependsOn: MainQueue
     Properties:
       Queues:
         - !Ref MainQueue
@@ -204,6 +205,7 @@ Resources:
             Condition:
               ArnEquals:
                 aws:SourceArn: !GetAtt EventRule.Arn
+          
 
   IdempotencyTable:
     Type: AWS::DynamoDB::Table
@@ -236,7 +238,7 @@ Resources:
             Version: "2012-10-17"
             Statement:
               - Effect: Allow
-                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes]
+                Action: [sqs:ReceiveMessage, sqs:DeleteMessage, sqs:GetQueueAttributes, sqs:ChangeMessageVisibility]
                 Resource: !GetAtt MainQueue.Arn
               - Effect: Allow
                 Action: [dynamodb:PutItem]
