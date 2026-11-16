@@ -115,13 +115,16 @@ Write-Host "ECR: $EcrUri" -ForegroundColor Gray
 # 7. Check whether this immutable image tag already exists
 Write-Host "`nChecking ECR image..." -ForegroundColor Cyan
 
-& aws ecr describe-images `
-    --repository-name $RepositoryName `
-    --image-ids "imageTag=$ImageTag" `
-    --region $Region `
-    --output json 2>$null | Out-Null
+$ImageCount = Invoke-Aws @(
+    "ecr", "list-images",
+    "--repository-name", $RepositoryName,
+    "--filter", "tagStatus=TAGGED",
+    "--query", "length(imageIds[?imageTag=='$ImageTag'])",
+    "--output", "text",
+    "--region", $Region
+)
 
-$ImageExists = ($LASTEXITCODE -eq 0)
+$ImageExists = ([int]$ImageCount -gt 0)
 
 if (-not $ImageExists) {
 
