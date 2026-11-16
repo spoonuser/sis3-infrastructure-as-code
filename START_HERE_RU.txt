@@ -1,0 +1,14 @@
+НАЧНИ ОТСЮДА
+
+1) Распакуй архив.
+2) Открой папку sis3-infrastructure-as-code в VS Code.
+3) Открой README.md и выполняй шаги строго по порядку.
+4) Сначала исправь проблему Docker Engine: открой Docker Desktop и дождись Engine running.
+5) Не создавай Root Access Keys. Используй уже доступный безопасный способ входа в AWS CLI.
+6) Первый CloudFormation deploy выполняется с DesiredCount=0, затем создаём/отправляем Docker image в ECR и обновляем стек до DesiredCount=1.
+7) Если AWS возвращает ошибку — остановись и пришли полный текст ошибки.
+
+Важно:
+- Это стартовый учебный проект. Перед deploy нужно проверить template через cfn-lint и Change Set.
+- AWS-ресурсы могут тарифицироваться. После защиты выполни Cleanup из README.
+- Не добавляй credentials или секреты в GitHub.
